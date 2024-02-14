@@ -1,7 +1,12 @@
 export interface IProduct {
-    id: number
-    name: string
-    price: number
-    image: string
-    description: string
-}
+    id?: string | undefined;
+    title: string;
+    description: string;
+    imageURL: string;
+    price: string;
+    colors: string[];
+    category: {
+      name: string;
+      imageURL: string;
+    };
+  }
