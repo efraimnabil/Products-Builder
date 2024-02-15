@@ -40,13 +40,13 @@ function App() {
         {renderProductCards}
       </div>
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
-        <div className='space-y-3'>
+        <form className='space-y-3'>
           {renderFormInputs}
           <div className="flex items-center space-x-3">
             <Button onClick={closeModal} className='bg-indigo-600 hover:bg-indigo-800'>Close</Button>
             <Button onClick={closeModal} className='bg-red-600 hover:bg-red-800'>Close</Button>
           </div>
-        </div>
+        </form>
       </Modal>
     </main>
   )
