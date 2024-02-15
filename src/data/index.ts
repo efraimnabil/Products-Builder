@@ -144,7 +144,7 @@ export const productList: IProduct[] = [
         "https://images.unsplash.com/photo-1552831388-6a0b3575b32a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
     },
   },
-];
+]
 
 export const formInputsList: IFormInput[] = [
   {
@@ -171,4 +171,21 @@ export const formInputsList: IFormInput[] = [
     label: "Price",
     type: "text"
   },
+]
+
+export const colors: string[] = [
+  "#a855f7",
+  "#2563eb",
+  "#84D2C5",
+  "#13005A",
+  "#A31ACB",
+  "#FF6E31",
+  "#3C2A21",
+  "#6C4AB6",
+  "#CB1C8D",
+  "#000000",
+  "#645CBB",
+  "#1F8A70",
+  "#820000",
+  "#FF0032",
 ]

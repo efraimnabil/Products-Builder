@@ -1,5 +1,5 @@
 import ProductCard from './components/ProductCard'
-import {formInputsList, productList} from './data'
+import {colors, formInputsList, productList} from './data'
 import Modal from './components/ui/Modal'
 import { FormEvent, useState } from 'react'
 import Button from './components/ui/Button'
@@ -7,6 +7,7 @@ import Input from './components/ui/Input'
 import { IProduct } from './interfaces'
 import { productValidation } from './validation'
 import ErrorMessage from './components/ErrorMessage'
+import CircleColor from './components/ui/CircleColor'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
     price: ''
   })
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedColors, setSelectedColors] = useState<string[]>([])
 
   // ** Handle Modal
   const closeModal = () => setIsOpen(false)
@@ -67,8 +69,9 @@ function App() {
   }
 
 
-  // ** Render Product Cards
+  // ** Renders
   const renderProductCards = productList.map((product) => <ProductCard key={product.id} product={product} />)
+
   const renderFormInputs = formInputsList.map(input => (
     <div key={input.id} className="flex flex-col">
       <label htmlFor={input.id} className="mb-[2px] text-sm font-medium text-gray-700">
@@ -85,6 +88,8 @@ function App() {
     </div>
   ))
 
+  const renderProductColors = colors.map((color) => <CircleColor key={color} color={color} onClick={() => setSelectedColors((prev) => [...prev, color])} />)
+
   return (
     <main className="container">
       <Button onClick={openModal} className='bg-indigo-600 hover:bg-indigo-800'>Add Product</Button>
@@ -94,6 +99,9 @@ function App() {
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
         <form className='space-y-3' onSubmit={handleSubmit}>
           {renderFormInputs}
+          <div className="flex items-center space-x-1">
+          {renderProductColors}
+          </div>
           <div className="flex items-center space-x-3">
             <Button className='bg-indigo-600 hover:bg-indigo-800'>Submit</Button>
             <Button onClick={onCancel} className='bg-red-600 hover:bg-red-800'>Close</Button>
