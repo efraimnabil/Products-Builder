@@ -1,23 +1,71 @@
 import ProductCard from './components/ProductCard'
 import {formInputsList, productList} from './data'
 import Modal from './components/ui/Modal'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Button from './components/ui/Button'
 import Input from './components/ui/Input'
+import { IProduct } from './interfaces'
+import { productValidation } from './validation'
+import ErrorMessage from './components/ErrorMessage'
 
 function App() {
 
+  const defaultProduct: IProduct = {
+    title: '',
+    description: '',
+    imageURL: '',
+    price: '',
+    colors: [],
+    category: {
+      name: '',
+      imageURL: ''
+    }
+  }
+
   // state
+  const [product, setProduct] = useState<IProduct>(defaultProduct)
+  const [errors, setErrors] = useState({
+    title: '',
+    description: '',
+    imageURL: '',
+    price: ''
+  })
   const [isOpen, setIsOpen] = useState(false)
 
   // ** Handle Modal
-  function closeModal() {
-    setIsOpen(false)
+  const closeModal = () => setIsOpen(false)
+  const openModal = () => setIsOpen(true)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+    setProduct({
+      ...product,
+      [name]: value
+    })
+
+    setErrors({
+      ...errors,
+      [name]: ''
+    })
   }
 
-  function openModal() {
-    setIsOpen(true)
+  const onCancel = () => {
+    setProduct(defaultProduct)
+    closeModal()
   }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+    const {title, description, imageURL, price} = product
+    const errors = productValidation({title, description, imageURL, price})
+
+    const hasErrorMsg = Object.values(errors).some((err) => err === '') && Object.values(errors).every((err) => err === '') 
+
+    if (!hasErrorMsg) {
+      setErrors(errors)
+    }
+
+  }
+
 
   // ** Render Product Cards
   const renderProductCards = productList.map((product) => <ProductCard key={product.id} product={product} />)
@@ -30,9 +78,13 @@ function App() {
         type={input.type}
         name={input.name}
         id={input.id}
+        value={product[input.name]}
+        onChange={handleChange}
       />
+      <ErrorMessage msg = {errors[input.name]} />
     </div>
   ))
+
   return (
     <main className="container">
       <Button onClick={openModal} className='bg-indigo-600 hover:bg-indigo-800'>Add Product</Button>
@@ -40,11 +92,11 @@ function App() {
         {renderProductCards}
       </div>
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
-        <form className='space-y-3'>
+        <form className='space-y-3' onSubmit={handleSubmit}>
           {renderFormInputs}
           <div className="flex items-center space-x-3">
-            <Button onClick={closeModal} className='bg-indigo-600 hover:bg-indigo-800'>Close</Button>
-            <Button onClick={closeModal} className='bg-red-600 hover:bg-red-800'>Close</Button>
+            <Button className='bg-indigo-600 hover:bg-indigo-800'>Submit</Button>
+            <Button onClick={onCancel} className='bg-red-600 hover:bg-red-800'>Close</Button>
           </div>
         </form>
       </Modal>
