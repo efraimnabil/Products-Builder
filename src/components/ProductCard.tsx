@@ -1,6 +1,6 @@
-import { IProduct } from "../interfaces/IProduct"
+import { IProduct } from "../interfaces"
 import { txtSlicer } from "../utils/functions"
-import Button from "./Button"
+import Button from "./ui/Button"
 import Image from "./Image"
 
 interface IProps {
