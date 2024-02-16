@@ -8,6 +8,7 @@ import { IProduct } from './interfaces'
 import { productValidation } from './validation'
 import ErrorMessage from './components/ErrorMessage'
 import CircleColor from './components/ui/CircleColor'
+import { v4 as uuid } from 'uuid'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
   }
 
   // state
+  const [products, setProductList] = useState<IProduct[]>(productList)
   const [product, setProduct] = useState<IProduct>(defaultProduct)
   const [errors, setErrors] = useState({
     title: '',
@@ -64,14 +66,26 @@ function App() {
 
     if (!hasErrorMsg) {
       setErrors(errors)
+      return
     }
 
+    setProductList(prev => [{...product, id: uuid(), colors: selectedColors}, ...prev])
+    setProduct(defaultProduct)
+    setSelectedColors([])
+    closeModal()
   }
 
+  // **************** Renders **************** \\
 
-  // ** Renders
-  const renderProductCards = productList.map((product) => <ProductCard key={product.id} product={product} />)
+  // ** Render Product Cards
+  const renderProductCards = products.map((product) => (
+    <ProductCard 
+      key={product.id} 
+      product={product} 
+    />
+  ))
 
+  // ** Render Form Inputs
   const renderFormInputs = formInputsList.map(input => (
     <div key={input.id} className="flex flex-col">
       <label htmlFor={input.id} className="mb-[2px] text-sm font-medium text-gray-700">
@@ -88,7 +102,19 @@ function App() {
     </div>
   ))
 
-  const renderProductColors = colors.map((color) => <CircleColor key={color} color={color} onClick={() => setSelectedColors((prev) => [...prev, color])} />)
+  // ** Render Product Colors
+  const renderProductColors = colors.map((color) => (
+    <CircleColor 
+      key={color} 
+      color={color} 
+      onClick={() => {
+        if (selectedColors.includes(color)) {
+          setSelectedColors(prev => prev.filter((c) => c !== color))
+          return;
+        }
+          setSelectedColors([...selectedColors, color])
+      }} />
+    ))
 
   return (
     <main className="container">
@@ -99,8 +125,21 @@ function App() {
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
         <form className='space-y-3' onSubmit={handleSubmit}>
           {renderFormInputs}
-          <div className="flex items-center space-x-1">
-          {renderProductColors}
+          <div className="flex items-center flex-wrap space-x-1">
+            {renderProductColors}
+          </div>
+          <div className="flex items-center flex-wrap space-x-1">
+            {
+              selectedColors.map((color) => (
+                <span 
+                  key={color} 
+                  className="p-1 mr-1 mb-1 text-xs rounded-md text-white"
+                  style={{backgroundColor: color}} 
+                >
+                  {color}
+                </span>
+              ))
+            }
           </div>
           <div className="flex items-center space-x-3">
             <Button className='bg-indigo-600 hover:bg-indigo-800'>Submit</Button>
