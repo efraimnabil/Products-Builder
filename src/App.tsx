@@ -1,5 +1,5 @@
 import ProductCard from './components/ProductCard'
-import {colors, formInputsList, productList} from './data'
+import {categories, colors, formInputsList, productList} from './data'
 import Modal from './components/ui/Modal'
 import { FormEvent, useState } from 'react'
 import Button from './components/ui/Button'
@@ -9,6 +9,7 @@ import { productValidation } from './validation'
 import ErrorMessage from './components/ErrorMessage'
 import CircleColor from './components/ui/CircleColor'
 import { v4 as uuid } from 'uuid'
+import Select from './components/ui/Select'
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
   })
   const [isOpen, setIsOpen] = useState(false)
   const [selectedColors, setSelectedColors] = useState<string[]>([])
+  const [selectedCategory, setSelectedCategory] = useState(categories[0])
 
   // ** Handle Modal
   const closeModal = () => setIsOpen(false)
@@ -69,7 +71,7 @@ function App() {
       return
     }
 
-    setProductList(prev => [{...product, id: uuid(), colors: selectedColors}, ...prev])
+    setProductList(prev => [{...product, id: uuid(), colors: selectedColors, category: selectedCategory}, ...prev])
     setProduct(defaultProduct)
     setSelectedColors([])
     closeModal()
@@ -125,6 +127,7 @@ function App() {
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add Product">
         <form className='space-y-3' onSubmit={handleSubmit}>
           {renderFormInputs}
+          <Select selected={selectedCategory} setSelected={setSelectedCategory} />
           <div className="flex items-center flex-wrap space-x-1">
             {renderProductColors}
           </div>
