@@ -11,9 +11,10 @@ interface IProps {
   idx: number
   setProductToEditIdx: (idx: number) => void
   setSelectedColors: (colors: string[]) => void
+  openConfirmModal: () => void
 }
 
-const ProductCard = ({product, setProductToEdit, openEditModal, idx, setProductToEditIdx, setSelectedColors}: IProps) => {
+const ProductCard = ({product, setProductToEdit, openEditModal, idx, setProductToEditIdx, setSelectedColors, openConfirmModal}: IProps) => {
 
   // **** State **** 
   const {title, description, price, imageURL, category, colors} = product
@@ -34,6 +35,11 @@ const ProductCard = ({product, setProductToEdit, openEditModal, idx, setProductT
     setProductToEditIdx(idx)
     setSelectedColors(colors)
     openEditModal()
+  }
+
+  const handleRemove = () => {
+    setProductToEdit(product)
+    openConfirmModal()
   }
     
   return (
@@ -60,8 +66,12 @@ const ProductCard = ({product, setProductToEdit, openEditModal, idx, setProductT
         </div>
 
         <div className="flex items-center justify-between space-x-2">
-          <Button className="bg-indigo-600" onClick={handleEdit}>EDIT</Button>
-          <Button className="bg-red-600">DELETE</Button>
+          <Button className="bg-indigo-600 hover:bg-indigo-700" onClick={handleEdit}>
+            Edit
+          </Button>
+          <Button className="bg-[#c2344d] hover:bg-red-800" onClick={handleRemove}>
+            Remove
+          </Button>
         </div>
 
     </div>
