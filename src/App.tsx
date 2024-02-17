@@ -43,9 +43,29 @@ function App() {
   const [productToEditIdx, setProductToEditIdx] = useState<number>(0)
 
   // ** Handle Modal
-  const closeModal = () => setIsOpen(false)
+  const closeModal = () => {
+    setIsOpen(false)
+    setProduct(defaultProduct)
+    setSelectedColors([])
+    setErrors({
+      title: '',
+      description: '',
+      imageURL: '',
+      price: ''
+    })
+  }
   const openModal = () => setIsOpen(true)
-  const closeEditModal = () => setIsOpenEdit(false)
+  const closeEditModal = () => {
+    setIsOpenEdit(false)
+    setProductToEdit(defaultProduct)
+    setSelectedColors([])
+    setErrors({
+      title: '',
+      description: '',
+      imageURL: '',
+      price: ''
+    })
+  }
   const openEditModal = () => setIsOpenEdit(true)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +83,13 @@ function App() {
 
   const onCancel = () => {
     setProduct(defaultProduct)
+    setSelectedColors([])
+    setErrors({
+      title: '',
+      description: '',
+      imageURL: '',
+      price: ''
+    })
     closeModal()
   }
 
@@ -214,7 +241,7 @@ function App() {
           </div>
           <div className="flex items-center space-x-3">
             <Button className='bg-indigo-600 hover:bg-indigo-800'>Submit</Button>
-            <Button onClick={onCancel} className='bg-red-600 hover:bg-red-800'>Close</Button>
+            <Button type="button" onClick={onCancel} className='bg-red-600 hover:bg-red-800'>Close</Button>
           </div>
         </form>
       </Modal>
@@ -241,7 +268,7 @@ function App() {
           </div>
           <div className="flex items-center space-x-3">
             <Button className="bg-indigo-600 hover:bg-indigo-800">Submit</Button>
-            <Button onClick={closeEditModal} className="bg-red-600 hover:bg-red-800">Close</Button>
+            <Button type="button" onClick={closeEditModal} className="bg-red-600 hover:bg-red-800">Close</Button>
           </div>
         </form>
 
