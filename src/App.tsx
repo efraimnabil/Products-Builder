@@ -250,8 +250,9 @@ function App() {
   return (
     <main className="container">
       <Button
-        className="w-fit block bg-indigo-700 hover:bg-indigo-800 mx-auto my-10 px-10 font-medium"
+        className="block bg-indigo-700 hover:bg-indigo-800 mx-auto my-10 px-10 font-medium"
         onClick={openModal}
+        width="w-fit"
       >
         Build a Product
       </Button>
